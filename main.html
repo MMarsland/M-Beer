@@ -11,11 +11,12 @@
           </div>
           <div id="console">
             <button onclick="runTrain()">TRAIN!</button>
-            <input id="timesInput" type="text" placeholder="50" value="50"/>
+            <input id="timesInput" type="text" placeholder="500" value="500"/>
             <div>
-              <input type="checkbox" id="style" name="style" onchange="changeDisplay()">
+              <input type="checkbox" id="style" name="style" onchange="changeDisplay()" checked>
               <label for="style">Directional Display</label>
             </div>
+            <button onclick="reset()" id="reset">Reset</button>
           </div>
           <div id="infoBox">
           </div>

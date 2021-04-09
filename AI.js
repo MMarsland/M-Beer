@@ -10,11 +10,14 @@ let qMatrix =  [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,
                 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
                 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
                 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
-let directionalDisplay = false;
+let directionalDisplay = true;
+
+
 // --- ONLOAD FUNCTION ---
 function onload() {
   displayQTableRepresentation(qMatrix);
 }
+
 
 // --- TRAINING FUNCTIONS ---
 function runTrain() {
@@ -37,7 +40,6 @@ function train(times) {
 
       let action = (allEqual(qMatrix[cur_pos[1]][cur_pos[0]]))? randInt(0,3) : qMatrix[cur_pos[1]][cur_pos[0]].indexOf(Math.max(...qMatrix[cur_pos[1]][cur_pos[0]]));
       if (randInt(1,5) == 5) {
-        //console.log("Doing a random action Instead!");
         action = randInt(0,3);
       }
       let next_state = getNextState(cur_pos, action);
@@ -76,6 +78,20 @@ function evaluate(cur_pos) {
     return -10;
   }
   return envMatrix[cur_pos[1]][cur_pos[0]];
+}
+
+function reset() {
+  qMatrix =  [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+              [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
+  displayQTableRepresentation(qMatrix);
 }
 
 
@@ -118,7 +134,6 @@ function displayQTableRepresentation(qTable) {
   infoBox.innerHTML = "";
 
   if (directionalDisplay){
-     console.log("Directional");
      for (let row of qTable) {
       rowCount++;
       colCount = -1;
@@ -141,7 +156,8 @@ function displayQTableRepresentation(qTable) {
           for (let i=0;i<4;i++) {
             triangles.push(document.createElement("div"));
             triangles[i].classList.add("triangle-"+triangleDirections[i]);
-            triangles[i].setAttribute("style","border-"+triangleDirections[i]+": 10px solid "+mapToColor(element[i]))
+            triangles[i].setAttribute("style","border-"+triangleDirections[(i+2)%4]+": 12.5px solid "+mapToColor(element[i]))
+            triangles[i].setAttribute("title", "Q-Value: "+element[i]);
             square.appendChild(triangles[i]);
           }
         }
@@ -150,7 +166,6 @@ function displayQTableRepresentation(qTable) {
     }
 
   } else {
-    console.log("Non-directional");
     for (let row of qTable) {
       rowCount++;
       colCount = -1;
@@ -160,6 +175,7 @@ function displayQTableRepresentation(qTable) {
         let color = mapToColor(value);
         let square = document.createElement("div");
         square.classList.add("square");
+        square.setAttribute("title", "Q-Value Sum: "+value);
         if(rowCount == 0 && colCount == 0) {
           square.setAttribute("style","background: purple;");
         } else if (holes.some(obj => obj[1] == rowCount && obj[0] == colCount)) {
@@ -176,9 +192,7 @@ function displayQTableRepresentation(qTable) {
 }
 
 function changeDisplay() {
-  console.log("Changing Display");
   directionalDisplay = !directionalDisplay;
-  console.log(directionalDisplay);
   displayQTableRepresentation(qMatrix);
 }
 

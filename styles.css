@@ -80,18 +80,6 @@ html, body
   border-right: 1px solid black;
 }
 
-.hole {
-  background: green;
-}
-
-.beer {
-  background: brown;
-}
-
-.player {
-  background: orange;
-}
-
 .hidden {
   color: gray;
   background: gray;
@@ -103,6 +91,10 @@ html, body
   margin-bottom:10px;
 }
 
+#reset {
+  margin-left:10px;
+}
+
 #infoBox {
   display: flex;
   flex-direction: row;
@@ -110,8 +102,8 @@ html, body
   height:500px;
   width:500px;
   background:#7f8000;
-
 }
+
 
 .square {
   position:relative;
@@ -122,34 +114,38 @@ html, body
 
 .triangle-bottom {
   position:absolute;
-  top:40px;
-  width: 30px;
+  top:37.5px;
+  left:12.5px;
+  width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+  border-left: 12.5px solid transparent;
+  border-right: 12.5px solid transparent;
 }
 
 .triangle-top {
   position:absolute;
-  width: 30px;
+  left:12.5px;
+  width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+  border-left: 12.5px solid transparent;
+  border-right: 12.5px solid transparent;
 }
 
 .triangle-right {
   position:absolute;
-  left:40px;
+  left: 37.5px;
+  top:12.5px;
   width: 0;
-  height: 30px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
+  height: 0;
+  border-top: 12.5px solid transparent;
+  border-bottom: 12.5px solid transparent;
 }
 
 .triangle-left {
   position:absolute;
+  top:12.5px;
   width: 0;
-  height: 30px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
+  height: 0;
+  border-top: 12.5px solid transparent;
+  border-bottom: 12.5px solid transparent;
 }
