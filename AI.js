@@ -10,7 +10,7 @@ let qMatrix =  [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,
                 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
                 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
                 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
-
+let directionalDisplay = false;
 // --- ONLOAD FUNCTION ---
 function onload() {
   displayQTableRepresentation(qMatrix);
@@ -116,27 +116,70 @@ function displayQTableRepresentation(qTable) {
   let rowCount = -1;
   let infoBox = document.getElementById("infoBox");
   infoBox.innerHTML = "";
-  for (let row of qTable) {
-    rowCount++;
-    colCount = -1;
-    for (let element of row) {
-      colCount++;
-      let value = sumElement(element);
-      let color = mapToColor(value);
-      let square = document.createElement("div");
-      square.classList.add("square");
-      if(rowCount == 0 && colCount == 0) {
-        square.setAttribute("style","background: purple;");
-      } else if (holes.some(obj => obj[1] == rowCount && obj[0] == colCount)) {
-        square.setAttribute("style","background: black;");
-      } else if (rowCount == 5 && colCount == 7) {
-        square.setAttribute("style","background: gold;");
-      } else {
-        square.setAttribute("style","background: "+color+";");
+
+  if (directionalDisplay){
+     console.log("Directional");
+     for (let row of qTable) {
+      rowCount++;
+      colCount = -1;
+      for (let element of row) {
+        colCount++;
+        //let value = sumElement(element);
+        //let color = mapToColor(value);
+        let square = document.createElement("div");
+        square.classList.add("square");
+      
+        if(rowCount == 0 && colCount == 0) {
+          square.setAttribute("style","background: purple;");
+        } else if (holes.some(obj => obj[1] == rowCount && obj[0] == colCount)) {
+          square.setAttribute("style","background: black;");
+        } else if (rowCount == 5 && colCount == 7) {
+          square.setAttribute("style","background: gold;");
+        } else {
+          let triangles = [];
+          let triangleDirections = ["top", "right", "bottom", "left"];
+          for (let i=0;i<4;i++) {
+            triangles.push(document.createElement("div"));
+            triangles[i].classList.add("triangle-"+triangleDirections[i]);
+            triangles[i].setAttribute("style","border-"+triangleDirections[i]+": 10px solid "+mapToColor(element[i]))
+            square.appendChild(triangles[i]);
+          }
+        }
+        infoBox.appendChild(square);
       }
-      infoBox.appendChild(square);
+    }
+
+  } else {
+    console.log("Non-directional");
+    for (let row of qTable) {
+      rowCount++;
+      colCount = -1;
+      for (let element of row) {
+        colCount++;
+        let value = sumElement(element);
+        let color = mapToColor(value);
+        let square = document.createElement("div");
+        square.classList.add("square");
+        if(rowCount == 0 && colCount == 0) {
+          square.setAttribute("style","background: purple;");
+        } else if (holes.some(obj => obj[1] == rowCount && obj[0] == colCount)) {
+          square.setAttribute("style","background: black;");
+        } else if (rowCount == 5 && colCount == 7) {
+          square.setAttribute("style","background: gold;");
+        } else {
+          square.setAttribute("style","background: "+color+";");
+        }
+        infoBox.appendChild(square);
+      }
     }
   }
+}
+
+function changeDisplay() {
+  console.log("Changing Display");
+  directionalDisplay = !directionalDisplay;
+  console.log(directionalDisplay);
+  displayQTableRepresentation(qMatrix);
 }
 
 
