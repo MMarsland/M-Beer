@@ -53,7 +53,7 @@ function train(times) {
     for (let i=0; i<path.length;i++) {
       let move = path[path.length-i-1];
       let orig = qMatrix[move[0][1]][move[0][0]][move[1]];
-      let modifier = (0.8**i)
+      let modifier = (0.8**i);
       let addition = score * modifier;
       qMatrix[move[0][1]][move[0][0]][move[1]] = orig + addition;
     }
@@ -96,14 +96,6 @@ function reset() {
 
 
 // --- DISPLAY FUNCTIONS ---
-function sumElement(element) {
-  let sum = 0;
-  for (let val of element) {
-    sum += val;
-  }
-  return sum;
-}
-
 function mapToColor(value) {
 
   let max = 1000;
@@ -160,6 +152,12 @@ function displayQTableRepresentation(qTable) {
             triangles[i].setAttribute("title", "Q-Value: "+element[i]);
             square.appendChild(triangles[i]);
           }
+          let arrowSymbol = getArrowDirectionSymbol(element);
+          let arrow = document.createElement("div");
+          arrow.classList.add("arrow");
+          arrow.setAttribute("style","color: "+mapToColor(Math.max(...element)));
+          arrow.innerHTML = arrowSymbol;
+          square.appendChild(arrow);
         }
         infoBox.appendChild(square);
       }
@@ -257,4 +255,20 @@ function randInt(min, max) {
   let realMax = max+1;
   let random = (Math.floor(Math.random() * (realMax-min)) + min);
   return random;
+}
+
+function sumElement(element) {
+  let sum = 0;
+  for (let val of element) {
+    sum += val;
+  }
+  return sum;
+}
+
+function getArrowDirectionSymbol(element) {
+  let maxIndex = element.indexOf(Math.max(...element));
+  if (Math.abs(sumElement(element)) <= 100) {
+    return "";
+  }
+  return ["&uarr;", "&rarr;", "&darr;", "&larr;"][maxIndex];
 }
